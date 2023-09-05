@@ -9,18 +9,23 @@
 	</style>
 </head>
 	<body>
-		<script src="three.min.js"></script> <!-- Trae una libreria desde internet, en este caso Three.js-->
+		<script src="three.min.js"></script> <!-- Trae una libreria desde la carpeta en donde se encuentran todos los files-->
 		<script> 
 			const scene = new THREE.Scene(); //.Scene() crea una escena en la página, es un conjstructor que no requiere parámetros
-			const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 ); 
-			//método PerspectiveCamera es un constructor que posee 4 parámetros
-			//Number fov (Field Of View)
+			const camera = new THREE.PerspectiveCamera( 75, window.innerWidth /window.innerHeight, 0.1, 1000 ); 
+			//método PerspectiveCamera es un constructor que define la visión de la camara y posee 4 parámetros
+			//Number fov (Field Of View) define el tamaño del campo de vision
+			//Number aspect (aspecto) define el aspecto de la cámara
+			//Number near (cercania del plano)
+			//Number far (lejanía del plano)
 
 			const renderer = new THREE.WebGLRenderer();
+			//
+
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
 
-			const geometry = new THREE.BoxGeometry(1,1,3); 	
+			const geometry = new THREE.BoxGeometry(1,1,1); 	
 			//método .BoxGeometry() es un constructor de una caja cuyos atributos son:
 			//float Width (ancho), float height (alto), depth float (profundidad)
 			//int widthSegments (#de segmentos del ancho), int heightSegments (#de segmentos del alto), int depthSegments(#de segmentos del alto)
