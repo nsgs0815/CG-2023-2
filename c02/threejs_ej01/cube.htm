@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>MDN Games: Three.js demo</title>
+	<style>
+		body { margin: 0; padding: 0; font-size: 0; }
+		canvas { width: 100%; height: 100%; }
+	</style>
+</head>
+	<body>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> <!-- Trae una libreria desde internet, en este caso Three.js-->
+		<script> 
+			const scene = new THREE.Scene(); //.Scene() crea una escena en la página, es un conjstructor que no requiere parámetros
+			const camera = new THREE.PerspectiveCamera( 75, window.innerWidth /window.innerHeight, 0.1, 1000 ); 
+			//método PerspectiveCamera es un constructor que posee 4 parámetros
+			//Number fov (Field Of View) define el tamaño del campo de vision
+			//
+
+			const renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+			const geometry = new THREE.BoxGeometry(1,1,3); 	
+			//método .BoxGeometry() es un constructor de una caja cuyos atributos son:
+			//float Width (ancho), float height (alto), depth float (profundidad)
+			//int widthSegments (#de segmentos del ancho), int heightSegments (#de segmentos del alto), int depthSegments(#de segmentos del alto)
+			//Este constructor trae por defecto en cada uno de sus atributos al menos un valor, en eset caso el valor default es 1
+
+
+			const material = new THREE.MeshBasicMaterial( { color: 0xF700FF } );
+			const cube = new THREE.Mesh( geometry, material );
+			scene.add( cube );
+
+			camera.position.z = 9;
+
+			function animate() {
+				requestAnimationFrame( animate );
+				cube.rotation.x += 0.01;
+				cube.rotation.y += 0.01;
+				renderer.render( scene, camera );
+			}
+
+			animate();
+		</script>
+	</body>
+</html>
