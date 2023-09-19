@@ -1,18 +1,21 @@
 const scene = new THREE.Scene();
-camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 //medidas del cubo
-const ancho = 0.8; const alto = ancho; const profundo = 0.2;
+const ancho = 2; const alto = ancho; const profundo = 2;
 //medidas del cilindro
 const radioSuperior = 0.4; const radioInferior = radioSuperior; const grosor = 0.2
 
 function cubo() {
-    const cubo = new THREE.BoxGeometry(ancho, alto, profundo); //constructor de geometria de cubo cuyos valores son(Float: ancho, Float: alto, Float: profundo)
+    const qbo = new THREE.BoxGeometry(ancho, alto, profundo); //constructor de geometria de cubo cuyos valores son(Float: ancho, Float: alto, Float: profundo)
     const material = new THREE.MeshNormalMaterial(); //mesh o textura del cubo
-    const cube = new THREE.Mesh(cubo, material); //objeto cubo
+    const cube = new THREE.Mesh(qbo, material); //objeto cubo
+    /*const pata1 = new cubo(); const pata2 = new cubo();  const pata3 = new cubo(); const pata4 = new cubo(); 
+    pata1.position.z = cube.position.z;
+    cube.add(pata1,pata2,pata3,pata4);*/
     scene.add(cube);
     return cube;
 }
@@ -26,21 +29,24 @@ function cilindro() {
     return cylinder;
 }
 
-
 const asiento = new cubo();
 const espaldar = new cilindro();
-espaldar.position.y = asiento.position.y + ancho;
+//patas
+const pata1 = new cubo(); const pata2 = new cubo();  
+const pata3 = new cubo(); const pata4 = new cubo();
 
-
-
+//posiciones de cada objeto
+asiento.scale.set(0.5,0.1,0.5) // esclado en x, y & z para el asiento para que adopte las formas de de las medidas 0.8,0.8 y 0.2 respectivamente
+espaldar.position.y = asiento.position.y + radioSuperior;
+pata1.position.set()
 
 function animate() {
     requestAnimationFrame(animate);
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
+    asiento.rotation.x += 0.01;
+    asiento.rotation.y += 0.01;
 
-    cylinder.rotation.x += 0.01;
-    cylinder.rotation.y += 0.01;
+    espaldar.rotation.x += 0.01;
+    espaldar.rotation.y += 0.01;
     renderer.render(scene, camera);
 }
 
