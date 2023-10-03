@@ -17,7 +17,7 @@ const puntoCurva = new THREE.CatmullRomCurve3([//puntos que definen la curva que
 const points = puntoCurva.getPoints(50); //optiene los puntos del arreglo de vectores "puntoCurva"
 const curva = new THREE.CatmullRomCurve3(points) //curva generada con el contructor dados los puntos optenidos anteriormente
 const geometry = new THREE.TubeGeometry(curva, 64, 0.6, 32, false); //constructor para geometria de tubo(linea o curva, segmentos tubulares,radio,segmentos radiales,cerrado o abierto)
-const material = new THREE.MeshPhongMaterial(); //material para usaer luces y sombras
+const material = new THREE.MeshPhongMaterial({side : THREE.DoubleSide}); //material para usaer luces y sombras, carga material tambien al interior del tubo
 const tubeMesh = new THREE.Mesh(geometry, material); //objeto malla que genera el tubo
 scene.add(tubeMesh); //añade el tubo a la escena
 
