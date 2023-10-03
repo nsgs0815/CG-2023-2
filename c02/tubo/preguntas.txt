@@ -1,0 +1,12 @@
+1. ¿Qué pasa si cambia la curva por una línea recta? ¿Cómo se verá el tubo en este caso?
+Al cambiar la curva por una línea recta, el tubo se genera al rededor de la línea y por lo tanto pasa a ser un tubo recto.
+
+2. ¿Qué sucede si ajusta el grosor del tubo o cambia el material utilizado para renderizarlo?
+Al cambiar el grosor del tubo por uno más ancho, si tiene muchas curvas o curvas pronunciadas, el objeto se ve como con "pliegues", lo que realmente sucede es que los 
+segmentos radiales y los segmentos tubulares se superponen y al tener un material como el "Normal" se pueden observar estos pliegues y sombras que se generan donde
+sucede la superposición.
+
+Ahora, si se ajusta el grosor por uno muy pequeño el tubo tenderá a verse como una línea curva mas no como un tubo en si, hace posible ver el trazo de la curva que lo define
+
+3. ¿Puede añadir iluminación y sombreado para mejorar la visualización del tubo?
+
