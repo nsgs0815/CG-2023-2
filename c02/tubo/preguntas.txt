@@ -9,4 +9,5 @@ sucede la superposición.
 Ahora, si se ajusta el grosor por uno muy pequeño el tubo tenderá a verse como una línea curva mas no como un tubo en si, hace posible ver el trazo de la curva que lo define
 
 3. ¿Puede añadir iluminación y sombreado para mejorar la visualización del tubo?
-
+Si, con el constructor de luces HemisphereLight(), se le puede asignar un color al piso, al cielo y la intensidad de la luz para poder visualizar el tubo.
+Para ver un poco mejor el efecto de las luces y sombras se añade una función para animar el tubo y ver como cambian con respecto al movimiento del tubo
