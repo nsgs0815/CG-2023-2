@@ -36,8 +36,8 @@ function cuboBase() { //funcion para crear un cubo de lado 1 centrado en el orig
     geometry.computeFaceNormals();
     geometry.computeVertexNormals();
 
-    // Calcular coordenadas UV manualmente
-    geometry.faceVertexUvs[0] = [];
+    //para mapear la malla y poderle meter un material custom
+    geometry.faceVertexUvs[0] = []; 
     for (let i = 0; i < geometry.faces.length; i++) {
         const face = geometry.faces[i];
         const uvs = [];
@@ -61,12 +61,15 @@ function cambiarMaterial(link, cubo) { //funcion para cambiar el material del cu
     cubo.material = nuevoMaterial;
 }
 
-const cubo1 = new cuboBase(); cambiarMaterial("https://ichef.bbci.co.uk/news/640/cpsprodpb/E1D3/production/_91411875_1743686_1420174834940050_5417600785934748934_n.jpg", cubo1);
-const cubo2 = new cuboBase(); cubo2.position.y = 0.75; cubo2.scale.set(0.5, 0.5, 0.5); //transformacioneas
-const cubo3 = new cuboBase(); cubo3.position.y = 1.125; cubo3.scale.set(0.25, 0.25, 0.25);
+const cubo1 = new cuboBase(); cambiarMaterial("https://ichef.bbci.co.uk/news/640/cpsprodpb/E1D3/production/_91411875_1743686_1420174834940050_5417600785934748934_n.jpg", cubo1); 
+//cambiar material del cubo1 por uno custum referido de internet
 
-estructura.add(cubo1, cubo2, cubo3);
-scene.add(estructura);
+const cubo2 = new cuboBase(); cubo2.position.y = 0.75; cubo2.scale.set(0.5, 0.5, 0.5); //transformaciones del cuboBase para que este encima del cubo1 y tenga de lado la mitad del cubo1
+const cubo3 = new cuboBase(); cubo3.position.y = 1.125; cubo3.scale.set(0.25, 0.25, 0.25); //transformaciones del cuboBase para que este encima del cubo2 y tenga de lado la mitad del cubo2
+cambiarMaterial("https://cdn.pixabay.com/photo/2014/09/17/21/43/bricks-450106_1280.jpg", cubo3); //cambiar material del cubo3 a uno custom referido de internet
+
+estructura.add(cubo1, cubo2, cubo3); //añadir los cubos a la estuctrura
+scene.add(estructura); //añadir estructura completa a la escena
 
 var axesHelper = new THREE.AxesHelper(5); //metodo para ver los ejes x,y,z
 scene.add(axesHelper);
@@ -76,13 +79,11 @@ camera.position.y = 1;
 camera.position.x = 3;
 
 
-
-
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'w' || event.key === 'W') { cono.rotation.y += 0.1; }
-    else if (event.key === 'a' || event.key === 'A') { cono.rotation.x -= 0.1; }
-    else if (event.key === 's' || event.key === 'S') { cono.rotation.y -= 0.1; }
-    else if (event.key === 'd' || event.key === 'D') { cono.rotation.x += 0.1; }
+document.addEventListener('keydown', (event) => {//acciones de rotacion de la estructura por comandos de teclado
+    if (event.key === 'w' || event.key === 'W') { estructura.rotation.y += 0.1; }
+    else if (event.key === 'a' || event.key === 'A') { estructura.rotation.x -= 0.1; }
+    else if (event.key === 's' || event.key === 'S') { estructura.rotation.y -= 0.1; }
+    else if (event.key === 'd' || event.key === 'D') { estructura.rotation.x += 0.1; }
 })
 
 function animate() {
