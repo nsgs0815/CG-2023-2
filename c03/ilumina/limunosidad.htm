@@ -30,37 +30,44 @@
         scene.background = new THREE.Color(0xCCFFFF); //asgina un color al background (fondo)
         renderer.shadowMap.enabled = true; //habilita las sombras en el render
         document.body.appendChild(renderer.domElement);
-        
+
         var axesHelper = new THREE.AxesHelper(5); //metodo para ver los ejes x,y,z
         scene.add(axesHelper);
         camera.position.z = 10; //posicion de la camara en Z
         camera.position.y = -3;
 
-
-
         //CAPARAZON
-        const capaGeometry = new THREE.CylinderGeometry(2, 4, 1, 32); //constructor de geometria cilíndirca
+        const capaGeometry = new THREE.CylinderGeometry(2, 4, 1, 12); //constructor de geometria cilíndirca
         const materialCaparazon = new THREE.MeshNormalMaterial({ color: 0x893404 }); //material con reflexion difusa (lambert)
         const caparazon = new THREE.Mesh(capaGeometry, materialCaparazon); //objeto caparazon
 
         //PATAS
         function patas() {
-            const pataGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 32);
-            const materialPata = new THREE.MeshNormalMaterial({ color: 0x098D23 }); //material con reflexion difusa (lambert)
-            const pata = new THREE.Mesh(pataGeometry, materialPata); 
+            const puntoCurva = new THREE.CatmullRomCurve3([//puntos que definen la curva que dibuja el tubo, vectores (x,y,z)
+                new THREE.Vector3(0, 0, 0),   // Punto de inicio
+                new THREE.Vector3(0, -1, 0),   // Punto en la parte superior de la pata izquierda
+                new THREE.Vector3(1, -1, 0),   // Punto en la parte inferior de la pata derecha
+            ]);
+
+            const points = puntoCurva.getPoints(50); //optiene los puntos del arreglo de vectores "puntoCurva"
+            const curva = new THREE.CatmullRomCurve3(points) //curva generada con el contructor dados los puntos optenidos anteriormente
+            const pataGeometry = new THREE.TubeGeometry(curva, 32, 0.5, 32, false); //constructor para geometria de tubo(linea o curva, segmentos tubulares,radio,segmentos radiales,cerrado o abierto)
+            const materialPatas = new THREE.MeshNormalMaterial({ side: THREE.DoubleSide }); //material para usaer luces y sombras, carga material tambien al interior del tubo
+            const pata = new THREE.Mesh(pataGeometry, materialPatas); //objeto malla que genera el tubo
             return pata;
         }
+        const pata1 = new patas(); pata1.position.set(-2.25, -0.5, 2);
+        const pata2 = new patas(); pata2.position.set(-2.25, -0.5, -2);
+        const pata3 = new patas(); pata3.position.set(2.25, -0.5, -2);
+        const pata4 = new patas(); pata4.position.set(2.25, -0.5, 2);
 
-        const pata1 = new patas(); pata1.position.set(-2.25,-1,2);
-        const pata2 = new patas(); pata2.position.set(-2.25,-1,-2);
-        const pata3 = new patas(); pata3.position.set(2.25,-1,-2);
-        const pata4 = new patas(); pata4.position.set(2.25,-1,2);
+        //CABEZA
 
 
 
-
+        //TORTUGA
         const tortuga = new THREE.Group();
-        tortuga.add(caparazon,pata1,pata2,pata3,pata4); //añadir elementosal grupo tortuga
+        tortuga.add(caparazon, pata1, pata2, pata3, pata4); //añadir elementosal grupo tortuga
         scene.add(tortuga); //añadr grupo tortuga
         function makeLights() {
             light0 = new THREE.AmbientLight(0x202020); // 10%
