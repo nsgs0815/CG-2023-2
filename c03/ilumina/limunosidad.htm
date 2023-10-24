@@ -20,16 +20,24 @@
 
 <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cs.wellesley.edu/~cs307/threejs/libs/OrbitControls-r95.js"></script>
     <script>
 
         const scene = new THREE.Scene(); //genera una nueva escena 
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000); //cámara del tipo perspectiva
         const renderer = new THREE.WebGLRenderer({ antialias: true }); //render
 
+        scene.background = new THREE.Color(0xB3DED7); //asgina un color al background (fondo)
         renderer.setSize(window.innerWidth, window.innerHeight);
-        scene.background = new THREE.Color(0xCCFFFF); //asgina un color al background (fondo)
         renderer.shadowMap.enabled = true; //habilita las sombras en el render
         document.body.appendChild(renderer.domElement);
+
+        //ORBIT CONTROLS
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableZoom = true;
+        controls.enableRotate = true;
+        controls.minDistance = 10;
+        controls.maxDistance = 500;
 
         var axesHelper = new THREE.AxesHelper(5); //metodo para ver los ejes x,y,z
         scene.add(axesHelper);
@@ -37,8 +45,8 @@
         camera.position.y = -3;
 
         //CAPARAZON
-        const capaGeometry = new THREE.CylinderGeometry(2, 4, 1, 12); //constructor de geometria cilíndirca
-        const materialCaparazon = new THREE.MeshNormalMaterial({ color: 0x893404 }); //material con reflexion difusa (lambert)
+        const capaGeometry = new THREE.CylinderGeometry(2, 4, 1, 8); //constructor de geometria cilíndirca
+        const materialCaparazon = new THREE.MeshLambertMaterial({ color: 0x893404 }); //material con reflexion difusa (lambert)
         const caparazon = new THREE.Mesh(capaGeometry, materialCaparazon); //objeto caparazon
 
         //PATAS
@@ -51,8 +59,8 @@
 
             const points = puntoCurva.getPoints(50); //optiene los puntos del arreglo de vectores "puntoCurva"
             const curva = new THREE.CatmullRomCurve3(points) //curva generada con el contructor dados los puntos optenidos anteriormente
-            const pataGeometry = new THREE.TubeGeometry(curva, 32, 0.5, 32, false); //constructor para geometria de tubo(linea o curva, segmentos tubulares,radio,segmentos radiales,cerrado o abierto)
-            const materialPatas = new THREE.MeshNormalMaterial({ side: THREE.DoubleSide }); //material para usaer luces y sombras, carga material tambien al interior del tubo
+            const pataGeometry = new THREE.TubeGeometry(curva, 8, 0.5, 8, false); //constructor para geometria de tubo(linea o curva, segmentos tubulares,radio,segmentos radiales,cerrado o abierto)
+            const materialPatas = new THREE.MeshLambertMaterial({ color: 0x045801 ,side: THREE.DoubleSide }); //material para usaer luces y sombras, carga material tambien al interior del tubo
             const pata = new THREE.Mesh(pataGeometry, materialPatas); //objeto malla que genera el tubo
             return pata;
         }
@@ -62,23 +70,35 @@
         const pata4 = new patas(); pata4.position.set(2.25, -0.5, 2);
 
         //CABEZA
+        function esfera() {
+            const kbzGeometry = new THREE.SphereGeometry(0.8, 32, 16);
+            var materialEsfera = new THREE.MeshLambertMaterial({ color: 0x045801 });
+            const esfera = new THREE.Mesh(kbzGeometry, materialEsfera);
+            return esfera;
+        }
+        const cabeza = new esfera(); cabeza.position.set(4, -0.75, 0);
 
+        //OJOS
+        const ojo1 = new esfera(); ojo1.scale.set(0.125, 0.125, 0.125); ojo1.position.set(4.75, 0, 0); 
+
+        //const ojo2 = new esfera();
 
 
         //TORTUGA
         const tortuga = new THREE.Group();
-        tortuga.add(caparazon, pata1, pata2, pata3, pata4); //añadir elementosal grupo tortuga
+        tortuga.add(cabeza, caparazon, pata1, pata2, pata3, pata4, ojo1); //añadir elementosal grupo tortuga
         scene.add(tortuga); //añadr grupo tortuga
-        function makeLights() {
+        function makeLights() { //LUCES DE LA ESCENA
+
             light0 = new THREE.AmbientLight(0x202020); // 10%
             scene.add(light0);
 
-            light1 = new THREE.PointLight(TW.WHITE, 0.5); // 50%
-            light1.position.set(-12, 15, 10);
+            light1 = new THREE.PointLight(0xEBF3EB,1); // 50%
+            light1.position.set(9, 8, 5);
             scene.add(light1);
 
-            light2 = new THREE.DirectionalLight(TW.WHITE, 0.3);
-            light2.position.set(0, 100, 10);
+            light2 = new THREE.DirectionalLight(0xEBF3EB,0.8);
+            light2.position.set(0, 0, 0);
             scene.add(light2);
         }
 
@@ -86,12 +106,12 @@
         function animate() {
             requestAnimationFrame(animate);
 
-            //controls.update();
-            tortuga.rotation.x += 0.01;
-            tortuga.rotation.y += 0.01;
+            controls.update();
+            //tortuga.rotation.x += 0.01;
+            //tortuga.rotation.y += 0.01;
             renderer.render(scene, camera);
         };
-        //animate();
+        animate();
         makeLights();
 
     </script>
